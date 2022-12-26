@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/member/join").permitAll()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/api/member/login").permitAll()
                 .anyRequest().authenticated()
                 .and().build();
     }
