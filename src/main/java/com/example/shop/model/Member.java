@@ -30,6 +30,8 @@ public class Member {
     private String password;
     private String name;
     private LocalDateTime joinDate;
+    private String phone;
+    private String email;
     private String roles;
 
     public List<String> getRoleList() {

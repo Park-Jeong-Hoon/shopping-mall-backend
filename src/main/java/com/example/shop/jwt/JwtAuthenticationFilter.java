@@ -66,5 +66,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .compact();
 
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.AUTH_TYPE + jwtToken);
+        response.getWriter().print("success");
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().print("fail");
     }
 }
