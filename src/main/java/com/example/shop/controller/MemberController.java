@@ -1,6 +1,6 @@
 package com.example.shop.controller;
 
-import com.example.shop.model.Member;
+import com.example.shop.dto.JoinDto;
 import com.example.shop.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +22,12 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody Member member) {
+    public ResponseEntity<String> join(@RequestBody JoinDto joinDto) {
 
         String result = "success";
 
         try {
-            memberService.save(member);
+            memberService.save(joinDto);
         } catch (Exception e) {
             e.printStackTrace();
             result = "false";

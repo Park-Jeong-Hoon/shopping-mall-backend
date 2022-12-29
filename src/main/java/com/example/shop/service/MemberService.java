@@ -1,5 +1,6 @@
 package com.example.shop.service;
 
+import com.example.shop.dto.JoinDto;
 import com.example.shop.model.Member;
 import com.example.shop.repository.MemberRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,9 +19,14 @@ public class MemberService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void save(Member member) {
+    public void save(JoinDto joinDto) {
 
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
+        Member member = new Member();
+        member.setUsername(joinDto.getUsername());
+        member.setPassword(passwordEncoder.encode(joinDto.getPassword()));
+        member.setName(joinDto.getName());
+        member.setPhone(joinDto.getPhone());
+        member.setEmail(joinDto.getEmail());
         member.setJoinDate(LocalDateTime.now());
         member.setRoles("ROLE_USER");
         memberRepository.save(member);

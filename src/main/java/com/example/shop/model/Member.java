@@ -32,6 +32,7 @@ public class Member {
     private LocalDateTime joinDate;
     private String phone;
     private String email;
+    private String refreshToken;
     private String roles;
 
     public List<String> getRoleList() {

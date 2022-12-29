@@ -2,6 +2,7 @@ package com.example.shop.config;
 
 import com.example.shop.jwt.JwtAuthenticationFilter;
 import com.example.shop.jwt.JwtAuthorizationFilter;
+import com.example.shop.jwt.JwtProvider;
 import com.example.shop.repository.MemberRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +20,12 @@ public class SecurityConfig {
 
     private final CorsConfig corsConfig;
     private final MemberRepository memberRepository;
+    private final JwtProvider jwtProvider;
 
-    public SecurityConfig(CorsConfig corsConfig, MemberRepository memberRepository) {
+    public SecurityConfig(CorsConfig corsConfig, MemberRepository memberRepository, JwtProvider jwtProvider) {
         this.corsConfig = corsConfig;
         this.memberRepository = memberRepository;
+        this.jwtProvider = jwtProvider;
     }
 
     @Bean
@@ -55,8 +58,8 @@ public class SecurityConfig {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
             builder
                     .addFilter(corsConfig.corsFilter())
-                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                    .addFilter(new JwtAuthorizationFilter(authenticationManager, memberRepository));
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager, jwtProvider))
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, memberRepository, jwtProvider));
         }
     }
 }

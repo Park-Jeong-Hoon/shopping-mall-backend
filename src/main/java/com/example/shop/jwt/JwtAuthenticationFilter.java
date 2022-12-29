@@ -3,8 +3,6 @@ package com.example.shop.jwt;
 import com.example.shop.auth.PrincipalDetails;
 import com.example.shop.model.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,15 +17,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
         this.authenticationManager = authenticationManager;
+        this.jwtProvider = jwtProvider;
         setFilterProcessesUrl("/api/member/login");
     }
 
@@ -58,14 +56,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         SecretKey jwtKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(JwtProperties.SECRET));
 
-        String jwtToken = Jwts.builder()
-                .setSubject("jwtToken")
-                .setExpiration(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
-                .setClaims(Map.of("id", principalDetails.getMember().getId()))
-                .signWith(jwtKey, SignatureAlgorithm.HS512)
-                .compact();
+        Long memberId = principalDetails.getMember().getId();
+        String accessToken = jwtProvider.createAccessToken(memberId, jwtKey);
+        String refreshToken = jwtProvider.createRefreshToken(jwtKey);
 
-        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.AUTH_TYPE + jwtToken);
+        jwtProvider.saveRefreshTokenDB(memberId, refreshToken);
+        jwtProvider.saveRefreshTokenCookie(refreshToken, response);
+        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.AUTH_TYPE + accessToken);
+        response.setContentType("application/json;charset=UTF-8");
         response.getWriter().print("success");
     }
 
