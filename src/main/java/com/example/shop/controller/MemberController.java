@@ -1,9 +1,12 @@
 package com.example.shop.controller;
 
+import com.example.shop.auth.PrincipalDetails;
 import com.example.shop.dto.JoinDto;
+import com.example.shop.model.Member;
 import com.example.shop.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,5 +37,11 @@ public class MemberController {
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<String> profile(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        Member member = principalDetails.getMember();
+        return new ResponseEntity<>("profile", HttpStatus.OK);
     }
 }

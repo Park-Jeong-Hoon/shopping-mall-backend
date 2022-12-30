@@ -61,7 +61,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         try {
             if (jwtHeader == null) { // 브라우저 새로고침 고려하여 accessToken 재발급
                 accessToken = jwtProvider.createAccessToken(memberId, jwtKey);
-                response.addHeader(JwtProperties.HEADER_STRING, accessToken);
+                response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.AUTH_TYPE + accessToken);
             } else { // 그 외의 경우 accessToken 유효성 검증
                 accessToken = jwtHeader.replace(JwtProperties.AUTH_TYPE, "");
                 claims = Jwts.parserBuilder().setSigningKey(JwtProperties.SECRET).build()

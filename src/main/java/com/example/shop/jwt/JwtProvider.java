@@ -27,9 +27,9 @@ public class JwtProvider {
     public String createAccessToken(Long id, SecretKey jwtKey) { // accessToken 생성
 
         return Jwts.builder()
+                .setClaims(Map.of("id", id))
                 .setSubject("access")
                 .setExpiration(new Date(System.currentTimeMillis() + JwtProperties.ACCESS_EXPIRATION_TIME))
-                .setClaims(Map.of("id", id))
                 .signWith(jwtKey, SignatureAlgorithm.HS512)
                 .compact();
     }
