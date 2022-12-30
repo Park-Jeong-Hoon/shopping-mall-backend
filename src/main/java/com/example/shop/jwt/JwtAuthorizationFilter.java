@@ -3,7 +3,7 @@ package com.example.shop.jwt;
 import com.example.shop.auth.PrincipalDetails;
 import com.example.shop.model.Member;
 import com.example.shop.repository.MemberRepository;
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -45,8 +45,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
 
-        Claims claims = null;
-
         try { // refreshToken 유효성 검증
             jwtProvider.validRefreshToken(refreshToken);
         } catch (Exception e) { // refreshToken 검증 결과에 따른 예외처리
@@ -64,9 +62,13 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.AUTH_TYPE + accessToken);
             } else { // 그 외의 경우 accessToken 유효성 검증
                 accessToken = jwtHeader.replace(JwtProperties.AUTH_TYPE, "");
-                claims = Jwts.parserBuilder().setSigningKey(JwtProperties.SECRET).build()
+                Jwts.parserBuilder().setSigningKey(JwtProperties.SECRET).build()
                         .parseClaimsJws(accessToken).getBody();
             }
+        } catch (ExpiredJwtException e){
+            e.printStackTrace();
+            accessToken = jwtProvider.createAccessToken(memberId, jwtKey);
+            response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.AUTH_TYPE + accessToken);
         } catch (Exception e) { // accessToken 검증 결과에 따른 예외처리
             e.printStackTrace();
             chain.doFilter(request, response);

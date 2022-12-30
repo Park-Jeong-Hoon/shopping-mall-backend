@@ -21,4 +21,6 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
+
+    private int quantity;
 }
