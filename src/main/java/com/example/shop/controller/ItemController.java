@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/item")
 public class ItemController {
@@ -38,5 +40,13 @@ public class ItemController {
         Item item = itemService.getById(id);
 
         return new ResponseEntity<>(item, HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Item>> getItemList() {
+
+        List<Item> itemList = itemService.getItemList();
+
+        return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 }

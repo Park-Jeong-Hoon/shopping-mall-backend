@@ -5,6 +5,7 @@ import com.example.shop.model.Item;
 import com.example.shop.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,5 +33,12 @@ public class ItemService {
             return null;
         }
         return itemOptional.get();
+    }
+
+    public List<Item> getItemList() {
+
+        List<Item> itemList = itemRepository.findAll();
+
+        return itemList;
     }
 }
