@@ -4,6 +4,7 @@ import com.example.shop.model.Member;
 import com.example.shop.repository.MemberRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,5 +90,21 @@ public class JwtProvider {
             throw new Exception();
         }
         return true;
+    }
+
+    @Transactional
+    @Modifying
+    public void logout(HttpServletResponse response, String refreshToken) {
+
+        Member member = memberRepository.findByRefreshToken(refreshToken);
+        member.setRefreshToken(null);
+
+        Cookie cookie = new Cookie("refreshToken", null);
+
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
     }
 }
