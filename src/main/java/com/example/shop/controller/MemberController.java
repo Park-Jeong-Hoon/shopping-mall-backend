@@ -2,6 +2,7 @@ package com.example.shop.controller;
 
 import com.example.shop.auth.PrincipalDetails;
 import com.example.shop.dto.JoinDto;
+import com.example.shop.dto.MemberDto;
 import com.example.shop.jwt.JwtProvider;
 import com.example.shop.model.Member;
 import com.example.shop.service.MemberService;
@@ -60,8 +61,16 @@ public class MemberController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<String> profile(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<MemberDto> profile(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
         Member member = principalDetails.getMember();
-        return new ResponseEntity<>("profile", HttpStatus.OK);
+        MemberDto memberDto = new MemberDto();
+        memberDto.setUsername(member.getUsername());
+        memberDto.setName(member.getName());
+        memberDto.setEmail(member.getEmail());
+        memberDto.setPhone(member.getPhone());
+        memberDto.setJoinDate(member.getJoinDate());
+
+        return new ResponseEntity<>(memberDto, HttpStatus.OK);
     }
 }
