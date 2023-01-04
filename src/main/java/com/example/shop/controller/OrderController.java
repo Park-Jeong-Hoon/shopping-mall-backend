@@ -1,6 +1,7 @@
 package com.example.shop.controller;
 
 import com.example.shop.auth.PrincipalDetails;
+import com.example.shop.dto.OrderDto;
 import com.example.shop.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,12 @@ public class OrderController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addOrder(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestBody List<Long> itemIdList) {
+    public ResponseEntity<String> addOrder(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestBody List<OrderDto> orderDtoList) {
 
         String result = "success";
 
         try {
-            orderService.saveOrder(principalDetails.getMember().getId(), itemIdList);
+            orderService.saveOrder(principalDetails.getMember().getId(), orderDtoList);
         } catch (Exception e) {
             e.printStackTrace();
             result = "fail";

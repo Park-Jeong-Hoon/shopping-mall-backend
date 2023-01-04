@@ -1,5 +1,6 @@
 package com.example.shop.service;
 
+import com.example.shop.dto.OrderDto;
 import com.example.shop.model.*;
 import com.example.shop.repository.ItemRepository;
 import com.example.shop.repository.MemberRepository;
@@ -30,7 +31,7 @@ public class OrderService {
 
     @Transactional
     @Modifying
-    public Long saveOrder(Long memberId, List<Long> itemIdList) throws Exception {
+    public Long saveOrder(Long memberId, List<OrderDto> itemIdList) throws Exception {
 
         Optional<Member> memberOptional = memberRepository.findById(memberId);
 
@@ -42,15 +43,16 @@ public class OrderService {
         Order order = new Order();
         order.setMember(memberOptional.get());
 
-        for (int i = 0; i < itemIdList.size(); i++) {
-            Item item = itemRepository.findById(itemIdList.get(i)).get();
-            item.setStockQuantity(item.getStockQuantity() - 1);
+        for (OrderDto orderDto : itemIdList) {
+            int quantity = orderDto.getQuantity();
+            Item item = itemRepository.findById(orderDto.getId()).get();
+            item.setStockQuantity(item.getStockQuantity() - quantity);
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setItem(item);
-            orderItem.setQuantity(1);
+            orderItem.setQuantity(quantity);
             orderItemRepository.save(orderItem);
-            price += item.getPrice();
+            price += item.getPrice() * quantity;
         }
 
         order.setPrice(price);
