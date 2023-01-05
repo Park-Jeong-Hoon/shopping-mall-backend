@@ -11,9 +11,13 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDto {
-    private Long id;
+public class OrderDetailDto {
+
+    private Long orderId;
     private OrderStatus orderStatus;
+    private int totalPrice;
+    private String itemName;
     private int price;
+    private int quantity;
     private LocalDateTime orderDate;
 }

@@ -1,6 +1,8 @@
 package com.example.shop.service;
 
+import com.example.shop.dto.OrderDetailDto;
 import com.example.shop.dto.OrderDto;
+import com.example.shop.dto.OrderItemDto;
 import com.example.shop.model.*;
 import com.example.shop.repository.ItemRepository;
 import com.example.shop.repository.MemberRepository;
@@ -31,7 +33,7 @@ public class OrderService {
 
     @Transactional
     @Modifying
-    public Long saveOrder(Long memberId, List<OrderDto> itemIdList) throws Exception {
+    public Long saveOrder(Long memberId, List<OrderItemDto> orderItemDtoList) throws Exception {
 
         Optional<Member> memberOptional = memberRepository.findById(memberId);
 
@@ -43,9 +45,9 @@ public class OrderService {
         Order order = new Order();
         order.setMember(memberOptional.get());
 
-        for (OrderDto orderDto : itemIdList) {
-            int quantity = orderDto.getQuantity();
-            Item item = itemRepository.findById(orderDto.getId()).get();
+        for (OrderItemDto orderItemDto : orderItemDtoList) {
+            int quantity = orderItemDto.getQuantity();
+            Item item = itemRepository.findById(orderItemDto.getId()).get();
             item.setStockQuantity(item.getStockQuantity() - quantity);
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
@@ -61,5 +63,15 @@ public class OrderService {
         orderRepository.save(order);
 
         return order.getId();
+    }
+
+    public List<OrderDto> getOrderDtoList(Long memberId) {
+
+        return orderRepository.getOrderDtoListByMemberId(memberId);
+    }
+
+    public List<OrderDetailDto> getOrderDetailDtoListById(Long orderId) {
+
+        return orderItemRepository.getOrderDetailDtoListByOrderId(orderId);
     }
 }
