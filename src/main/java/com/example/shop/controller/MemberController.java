@@ -73,4 +73,12 @@ public class MemberController {
 
         return new ResponseEntity<>(memberDto, HttpStatus.OK);
     }
+
+    @GetMapping("/name")
+    public ResponseEntity<String> nameForNav(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        Member member = principalDetails.getMember();
+
+        return new ResponseEntity<>(member.getName(), HttpStatus.OK);
+    }
 }

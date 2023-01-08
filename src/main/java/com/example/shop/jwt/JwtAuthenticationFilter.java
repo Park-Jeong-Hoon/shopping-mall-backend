@@ -17,6 +17,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -56,7 +58,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         SecretKey jwtKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(JwtProperties.SECRET));
 
-        Long memberId = principalDetails.getMember().getId();
+        Member member = principalDetails.getMember();
+        Long memberId = member.getId();
         String accessToken = jwtProvider.createAccessToken(memberId, jwtKey);
         String refreshToken = jwtProvider.createRefreshToken(jwtKey);
 
@@ -64,12 +67,23 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         jwtProvider.saveRefreshTokenCookie(refreshToken, response);
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.AUTH_TYPE + accessToken);
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().print("success");
+
+        Map<String, String> responseMap = new HashMap<>();
+        responseMap.put("result", "success");
+        responseMap.put("name", member.getName());
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(responseMap);
+        response.getWriter().print(result);
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().print("fail");
+
+        Map<String, String> responseMap = new HashMap<>();
+        responseMap.put("result", "fail");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(responseMap);
+        response.getWriter().print(result);
     }
 }
