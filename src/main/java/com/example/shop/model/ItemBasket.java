@@ -8,22 +8,18 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderItem {
+public class ItemBasket {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Order order;
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
-
-    private int quantity;
-
-    @Enumerated(EnumType.STRING)
-    private OrderItemStatus orderItemStatus;
 }
