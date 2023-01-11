@@ -74,4 +74,19 @@ public class ItemController {
 
         return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
+
+    @PostMapping("/basket/delete")
+    public ResponseEntity<String> deleteItemBasketById(@RequestBody Long itemId) {
+
+        String result = "success";
+
+        try {
+            itemService.deleteItemBasketByItemId(itemId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = "fail";
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

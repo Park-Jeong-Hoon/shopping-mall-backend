@@ -7,6 +7,7 @@ import com.example.shop.model.Member;
 import com.example.shop.repository.ItemBasketRepository;
 import com.example.shop.repository.ItemRepository;
 import com.example.shop.repository.MemberRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,5 +76,18 @@ public class ItemService {
         List<Item> itemList = itemBasketRepository.getKeepItemsByMemberId(memberId);
 
         return itemList;
+    }
+
+    @Transactional
+    @Modifying
+    public void deleteItemBasketByItemId(Long itemId) throws Exception {
+
+        Optional<ItemBasket> itemBasketOptional = itemBasketRepository.findByItem_Id(itemId);
+
+        if (itemBasketOptional.isEmpty()) {
+            throw new Exception("장바구니 목록에 존재하지 않는 데이터");
+        }
+
+        itemBasketRepository.deleteByItem_Id(itemId);
     }
 }

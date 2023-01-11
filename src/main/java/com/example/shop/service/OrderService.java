@@ -53,6 +53,7 @@ public class OrderService {
             orderItem.setOrder(order);
             orderItem.setItem(item);
             orderItem.setQuantity(quantity);
+            orderItem.setOrderItemStatus(OrderItemStatus.ORDER);
             orderItemRepository.save(orderItem);
             price += item.getPrice() * quantity;
         }
