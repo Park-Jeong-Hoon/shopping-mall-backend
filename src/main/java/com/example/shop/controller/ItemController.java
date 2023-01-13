@@ -67,6 +67,14 @@ public class ItemController {
         return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
+    @GetMapping("/all/{name}")
+    public ResponseEntity<List<Item>> getItemListByNameContains(@PathVariable String name) {
+
+        List<Item> itemList = itemService.getItemListByNameContains(name);
+
+        return new ResponseEntity<>(itemList, HttpStatus.OK);
+    }
+
     @GetMapping("/basket")
     public ResponseEntity<List<Item>> getItemBasketList(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 

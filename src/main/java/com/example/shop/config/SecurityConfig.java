@@ -47,6 +47,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/member/join").permitAll()
                 .antMatchers("/api/member/login").permitAll()
+                .antMatchers("/api/item/all/**").permitAll()
                 .anyRequest().authenticated()
                 .and().build();
     }

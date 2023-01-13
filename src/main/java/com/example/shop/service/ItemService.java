@@ -71,6 +71,13 @@ public class ItemService {
         return itemList;
     }
 
+    public List<Item> getItemListByNameContains(String name) {
+
+        List<Item> itemList = itemRepository.findAllByNameContains(name);
+
+        return itemList;
+    }
+
     public List<Item> getItemBasketByMemberId(Long memberId) {
 
         List<Item> itemList = itemBasketRepository.getKeepItemsByMemberId(memberId);
