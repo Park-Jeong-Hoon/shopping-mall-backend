@@ -75,4 +75,24 @@ public class OrderService {
 
         return orderItemRepository.getOrderDetailDtoListByOrderId(orderId);
     }
+
+    @Transactional
+    @Modifying
+    public void cancelOrder(Long orderId) throws Exception {
+
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+
+        if (orderOptional.isEmpty()) {
+            throw new Exception("해당 주문건 없음");
+        }
+
+        Order order = orderOptional.get();
+        order.setOrderStatus(OrderStatus.CANCEL);
+
+        List<OrderItem> orderItemList = orderItemRepository.findAllByOrder_Id(orderId);
+
+        for (OrderItem orderItem : orderItemList) {
+            orderItem.setOrderItemStatus(OrderItemStatus.CANCEL);
+        }
+    }
 }

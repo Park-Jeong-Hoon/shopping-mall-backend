@@ -52,4 +52,19 @@ public class OrderController {
 
         return new ResponseEntity<>(orderDetailDtoList, HttpStatus.OK);
     }
+
+    @PostMapping("/cancel")
+    public ResponseEntity<String> cancelOrder(@RequestBody Long orderId) {
+
+        String result = "success";
+
+        try {
+            orderService.cancelOrder(orderId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = "fail";
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
