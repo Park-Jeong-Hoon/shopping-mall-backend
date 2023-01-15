@@ -93,6 +93,8 @@ public class OrderService {
 
         for (OrderItem orderItem : orderItemList) {
             orderItem.setOrderItemStatus(OrderItemStatus.CANCEL);
+            Item item = orderItem.getItem();
+            item.setStockQuantity(item.getStockQuantity() + orderItem.getQuantity());
         }
     }
 }
