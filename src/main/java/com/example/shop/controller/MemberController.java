@@ -25,11 +25,6 @@ public class MemberController {
         this.jwtProvider = jwtProvider;
     }
 
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello() {
-        return new ResponseEntity<>("hello", HttpStatus.OK);
-    }
-
     @PostMapping("/join")
     public ResponseEntity<String> join(@RequestBody JoinDto joinDto) {
 
@@ -80,5 +75,20 @@ public class MemberController {
         Member member = principalDetails.getMember();
 
         return new ResponseEntity<>(member.getName(), HttpStatus.OK);
+    }
+
+    @PostMapping("/profile/edit")
+    public ResponseEntity<String> profileEdit(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestBody MemberDto memberDto) {
+
+        String result = "success";
+
+        try {
+            memberService.profileEdit(principalDetails.getMember().getId(), memberDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = "fail";
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
