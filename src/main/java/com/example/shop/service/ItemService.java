@@ -32,7 +32,7 @@ public class ItemService {
 
     public void add(MultipartFile file, ItemDto itemDto) throws IOException {
 
-        String filepath = "C:/saveFolder/";
+        String filepath = "C:/shopfront/public/saveFolder/";
         String originFileName = file.getOriginalFilename();
 
         String saveFileName = System.currentTimeMillis() + originFileName;

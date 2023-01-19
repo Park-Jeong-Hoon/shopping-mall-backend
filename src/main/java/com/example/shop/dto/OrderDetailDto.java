@@ -19,5 +19,6 @@ public class OrderDetailDto {
     private String itemName;
     private int price;
     private int quantity;
+    private String imageName;
     private LocalDateTime orderDate;
 }
