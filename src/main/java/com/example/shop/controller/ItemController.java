@@ -4,6 +4,7 @@ import com.example.shop.auth.PrincipalDetails;
 import com.example.shop.dto.ItemDto;
 import com.example.shop.model.Item;
 import com.example.shop.service.ItemService;
+import com.example.shop.service.S3Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,9 +18,11 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
+    private final S3Service s3Service;
 
-    public ItemController(ItemService itemService) {
+    public ItemController(ItemService itemService, S3Service s3Service) {
         this.itemService = itemService;
+        this.s3Service = s3Service;
     }
 
     @PostMapping("/add")
@@ -28,7 +31,8 @@ public class ItemController {
         String result = "success";
 
         try {
-            itemService.add(file, itemDto);
+            String imgUrl = s3Service.uploadFile(file);
+            itemService.add(itemDto, imgUrl);
         } catch (Exception e) {
             e.printStackTrace();
             result = "fail";

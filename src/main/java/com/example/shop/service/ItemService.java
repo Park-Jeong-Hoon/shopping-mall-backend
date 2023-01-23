@@ -10,10 +10,7 @@ import com.example.shop.repository.MemberRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,25 +27,13 @@ public class ItemService {
         this.itemBasketRepository = itemBasketRepository;
     }
 
-    public void add(MultipartFile file, ItemDto itemDto) throws IOException {
-
-        String filepath = "C:/shopfront/public/saveFolder/";
-        String originFileName = file.getOriginalFilename();
-
-        String saveFileName = System.currentTimeMillis() + originFileName;
-
-        try {
-            File file1 = new File(filepath + saveFileName);
-            file.transferTo(file1);
-        } catch (IOException e) {
-            throw new IOException();
-        }
+    public void add(ItemDto itemDto, String imgUrl) {
 
         Item item = new Item();
         item.setName(itemDto.getName());
         item.setPrice(itemDto.getPrice());
         item.setStockQuantity(itemDto.getStockQuantity());
-        item.setImageName(saveFileName);
+        item.setImageName(imgUrl);
         itemRepository.save(item);
     }
 

@@ -1,4 +1,7 @@
 spring:
+  config:
+    import: application-aws.yml
+
   datasource:
     url: jdbc:mariadb://localhost:3306/shop
     driver-class-name: org.mariadb.jdbc.Driver
