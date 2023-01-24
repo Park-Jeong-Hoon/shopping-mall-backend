@@ -1,5 +1,6 @@
 package com.example.shop.dto;
 
+import com.example.shop.model.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,5 @@ public class MemberDto {
     private LocalDateTime joinDate;
     private String phone;
     private String email;
+    private Address address;
 }

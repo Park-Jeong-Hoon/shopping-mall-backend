@@ -33,6 +33,7 @@ public class MemberService {
         member.setEmail(joinDto.getEmail());
         member.setJoinDate(LocalDateTime.now());
         member.setRoles("ROLE_USER");
+        member.setAddress(joinDto.getAddress());
         memberRepository.save(member);
     }
 
@@ -50,5 +51,6 @@ public class MemberService {
         member.setName(memberDto.getName());
         member.setEmail(memberDto.getEmail());
         member.setPhone(memberDto.getPhone());
+        member.setAddress(memberDto.getAddress());
     }
 }

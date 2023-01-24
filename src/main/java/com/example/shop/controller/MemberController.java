@@ -65,6 +65,7 @@ public class MemberController {
         memberDto.setEmail(member.getEmail());
         memberDto.setPhone(member.getPhone());
         memberDto.setJoinDate(member.getJoinDate());
+        memberDto.setAddress(member.getAddress());
 
         return new ResponseEntity<>(memberDto, HttpStatus.OK);
     }

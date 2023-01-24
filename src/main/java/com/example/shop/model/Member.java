@@ -29,6 +29,10 @@ public class Member {
     private LocalDateTime joinDate;
     private String phone;
     private String email;
+
+    @Embedded
+    private Address address;
+
     private String refreshToken;
     private String roles;
 

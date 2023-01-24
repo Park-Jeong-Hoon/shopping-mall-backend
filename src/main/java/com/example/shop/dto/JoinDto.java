@@ -1,5 +1,6 @@
 package com.example.shop.dto;
 
+import com.example.shop.model.Address;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,4 +12,5 @@ public class JoinDto {
     private String name;
     private String phone;
     private String email;
+    private Address address;
 }
