@@ -41,9 +41,15 @@ public class OrderService {
             throw new Exception("해당 회원 없음");
         }
 
+        Member member = memberOptional.get();
+
+        Delivery delivery = new Delivery();
+        delivery.setAddress(member.getAddress());
+        delivery.setDeliveryStatus(DeliveryStatus.READY);
+
         int price = 0;
         Order order = new Order();
-        order.setMember(memberOptional.get());
+        order.setMember(member);
 
         for (OrderItemDto orderItemDto : orderItemDtoList) {
             int quantity = orderItemDto.getQuantity();
@@ -61,6 +67,7 @@ public class OrderService {
         order.setPrice(price);
         order.setOrderStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());
+        order.setDelivery(delivery);
         orderRepository.save(order);
 
         return order.getId();
@@ -87,6 +94,11 @@ public class OrderService {
         }
 
         Order order = orderOptional.get();
+
+        if (order.getDelivery().getDeliveryStatus().equals(DeliveryStatus.START)) {
+            throw new Exception("이미 배송이 시작된 주문");
+        }
+
         order.setOrderStatus(OrderStatus.CANCEL);
 
         List<OrderItem> orderItemList = orderItemRepository.findAllByOrder_Id(orderId);
