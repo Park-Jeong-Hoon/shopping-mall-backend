@@ -31,10 +31,10 @@ public class MemberController {
         String result = "success";
 
         try {
-            memberService.save(joinDto);
+            memberService.join(joinDto);
         } catch (Exception e) {
             e.printStackTrace();
-            result = "false";
+            result = "fail";
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);

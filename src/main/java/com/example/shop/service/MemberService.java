@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,7 +24,13 @@ public class MemberService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void save(JoinDto joinDto) {
+    public Long join(JoinDto joinDto) {
+
+        List<Member> members = memberRepository.findAllByUsername(joinDto.getUsername());
+
+        if (!members.isEmpty()) {
+            throw new IllegalStateException("이미 존재하는 회원");
+        }
 
         Member member = new Member();
         member.setUsername(joinDto.getUsername());
@@ -35,6 +42,8 @@ public class MemberService {
         member.setRoles("ROLE_USER");
         member.setAddress(joinDto.getAddress());
         memberRepository.save(member);
+
+        return member.getId();
     }
 
     @Transactional
