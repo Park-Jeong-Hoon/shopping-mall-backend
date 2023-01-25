@@ -21,6 +21,10 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "delivery_id")
+    private Delivery delivery;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
