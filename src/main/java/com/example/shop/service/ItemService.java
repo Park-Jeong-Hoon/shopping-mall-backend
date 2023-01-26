@@ -46,6 +46,10 @@ public class ItemService {
             throw new Exception("해당 회원 없음");
         }
 
+        if(itemBasketRepository.findAllByMember_IdAndItem_Id(memberId, itemId).size() > 0) {
+            throw new Exception("이미 장바구니에 추가된 아이템");
+        }
+
         Item item = itemRepository.findById(itemId).get();
 
         ItemBasket itemBasket = new ItemBasket();
@@ -88,14 +92,12 @@ public class ItemService {
 
     @Transactional
     @Modifying
-    public void deleteItemBasketByItemId(Long itemId) throws Exception {
+    public void deleteItemBasketByMemberIdAndItemId(Long memberId, Long itemId) throws Exception {
 
-        Optional<ItemBasket> itemBasketOptional = itemBasketRepository.findByItem_Id(itemId);
-
-        if (itemBasketOptional.isEmpty()) {
+        if (itemBasketRepository.findAllByMember_IdAndItem_Id(memberId, itemId).size() == 0) {
             throw new Exception("장바구니 목록에 존재하지 않는 데이터");
         }
 
-        itemBasketRepository.deleteByItem_Id(itemId);
+        itemBasketRepository.deleteByMember_IdAndItem_Id(memberId, itemId);
     }
 }

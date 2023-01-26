@@ -89,12 +89,12 @@ public class ItemController {
     }
 
     @PostMapping("/basket/delete")
-    public ResponseEntity<String> deleteItemBasketById(@RequestBody Long itemId) {
+    public ResponseEntity<String> deleteItemBasketById(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestBody Long itemId) {
 
         String result = "success";
 
         try {
-            itemService.deleteItemBasketByItemId(itemId);
+            itemService.deleteItemBasketByMemberIdAndItemId(principalDetails.getMember().getId(), itemId);
         } catch (Exception e) {
             e.printStackTrace();
             result = "fail";

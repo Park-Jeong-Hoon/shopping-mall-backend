@@ -7,14 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ItemBasketRepository extends JpaRepository<ItemBasket, Long> {
 
     @Query(value = "SELECT i.item FROM ItemBasket i WHERE i.member.id = :memberId")
     List<Item> getKeepItemsByMemberId(@Param(value = "memberId") Long memberId);
 
-    Optional<ItemBasket> findByItem_Id(Long itemId);
+    List<ItemBasket> findAllByMember_IdAndItem_Id(Long memberId, Long itemId);
 
-    void deleteByItem_Id(Long itemId);
+    void deleteByMember_IdAndItem_Id(Long memberId, Long itemId);
 }
