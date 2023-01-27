@@ -38,7 +38,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String accessToken = "";
         SecretKey jwtKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(JwtProperties.SECRET));
 
-        if (refreshToken == null) {
+        if (refreshToken == null || refreshToken.equals("")) {
             chain.doFilter(request, response);
             return;
         }

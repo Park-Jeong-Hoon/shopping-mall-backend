@@ -1,5 +1,6 @@
 package com.example.shop.dto;
 
+import com.example.shop.model.DeliveryStatus;
 import com.example.shop.model.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,4 +17,5 @@ public class OrderDto {
     private OrderStatus orderStatus;
     private int price;
     private LocalDateTime orderDate;
+    private DeliveryStatus deliveryStatus;
 }
