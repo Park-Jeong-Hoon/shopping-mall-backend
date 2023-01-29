@@ -34,6 +34,7 @@ public class Member {
     private Address address;
 
     private String refreshToken;
+    private int revenue;
     private String roles;
 
     public List<String> getRoleList() {

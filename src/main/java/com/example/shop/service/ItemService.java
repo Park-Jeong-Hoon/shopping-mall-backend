@@ -1,5 +1,6 @@
 package com.example.shop.service;
 
+import com.example.shop.dto.ItemAddDto;
 import com.example.shop.dto.ItemDto;
 import com.example.shop.model.Item;
 import com.example.shop.model.ItemBasket;
@@ -27,13 +28,21 @@ public class ItemService {
         this.itemBasketRepository = itemBasketRepository;
     }
 
-    public void add(ItemDto itemDto, String imgUrl) {
+    public void add(ItemAddDto itemAddDto, String imgUrl, Long memberId) throws Exception {
+
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+
+        if(memberOptional.isEmpty()) {
+            throw new Exception("존재하지 않는 회원");
+        }
+        Member member = memberOptional.get();
 
         Item item = new Item();
-        item.setName(itemDto.getName());
-        item.setPrice(itemDto.getPrice());
-        item.setStockQuantity(itemDto.getStockQuantity());
+        item.setName(itemAddDto.getName());
+        item.setPrice(itemAddDto.getPrice());
+        item.setStockQuantity(itemAddDto.getStockQuantity());
         item.setImageName(imgUrl);
+        item.setMember(member);
         itemRepository.save(item);
     }
 
@@ -60,34 +69,34 @@ public class ItemService {
         return itemBasket.getId();
     }
 
-    public Item getById(Long id) {
+    public ItemDto getItemDtoById(Long id) {
 
-        Optional<Item> itemOptional = itemRepository.findById(id);
+        Optional<ItemDto> itemOptional = itemRepository.getItemDtoById(id);
         if (itemOptional.isEmpty()) {
             return null;
         }
         return itemOptional.get();
     }
 
-    public List<Item> getItemList() {
+    public List<ItemDto> getItemDtoList() {
 
-        List<Item> itemList = itemRepository.findAll();
+        List<ItemDto> itemDtoList = itemRepository.getAllDtoList();
 
-        return itemList;
+        return itemDtoList;
     }
 
-    public List<Item> getItemListByNameContains(String name) {
+    public List<ItemDto> getItemDtoListByNameContains(String name) {
 
-        List<Item> itemList = itemRepository.findAllByNameContains(name);
+        List<ItemDto> itemDtoList = itemRepository.getItemDtoListByNameContains(name);
 
-        return itemList;
+        return itemDtoList;
     }
 
-    public List<Item> getItemBasketByMemberId(Long memberId) {
+    public List<ItemDto> getItemDtoBasketByMemberId(Long memberId) {
 
-        List<Item> itemList = itemBasketRepository.getKeepItemsByMemberId(memberId);
+        List<ItemDto> itemDtoList = itemBasketRepository.getKeepItemDtoListByMemberId(memberId);
 
-        return itemList;
+        return itemDtoList;
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package com.example.shop.controller;
 
 import com.example.shop.auth.PrincipalDetails;
+import com.example.shop.dto.ItemAddDto;
 import com.example.shop.dto.ItemDto;
 import com.example.shop.model.Item;
 import com.example.shop.service.ItemService;
@@ -26,13 +27,13 @@ public class ItemController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> add(@RequestPart("file") MultipartFile file, @RequestPart("json") ItemDto itemDto) {
+    public ResponseEntity<String> add(@RequestPart("file") MultipartFile file, @RequestPart("json") ItemAddDto itemAddDto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         String result = "success";
 
         try {
             String imgUrl = s3Service.uploadFile(file);
-            itemService.add(itemDto, imgUrl);
+            itemService.add(itemAddDto, imgUrl, principalDetails.getMember().getId());
         } catch (Exception e) {
             e.printStackTrace();
             result = "fail";
@@ -57,35 +58,35 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Item> getById(@PathVariable Long id) {
+    public ResponseEntity<ItemDto> getItemDtoById(@PathVariable Long id) {
 
-        Item item = itemService.getById(id);
+        ItemDto itemDto = itemService.getItemDtoById(id);
 
-        return new ResponseEntity<>(item, HttpStatus.OK);
+        return new ResponseEntity<>(itemDto, HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Item>> getItemList() {
+    public ResponseEntity<List<ItemDto>> getItemDtoList() {
 
-        List<Item> itemList = itemService.getItemList();
+        List<ItemDto> itemDtoList = itemService.getItemDtoList();
 
-        return new ResponseEntity<>(itemList, HttpStatus.OK);
+        return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/all/{name}")
-    public ResponseEntity<List<Item>> getItemListByNameContains(@PathVariable String name) {
+    public ResponseEntity<List<ItemDto>> getItemDtoListByNameContains(@PathVariable String name) {
 
-        List<Item> itemList = itemService.getItemListByNameContains(name);
+        List<ItemDto> itemDtoList = itemService.getItemDtoListByNameContains(name);
 
-        return new ResponseEntity<>(itemList, HttpStatus.OK);
+        return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/basket")
-    public ResponseEntity<List<Item>> getItemBasketList(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<List<ItemDto>> getItemDtoBasketList(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-        List<Item> itemList = itemService.getItemBasketByMemberId(principalDetails.getMember().getId());
+        List<ItemDto> itemDtoList = itemService.getItemDtoBasketByMemberId(principalDetails.getMember().getId());
 
-        return new ResponseEntity<>(itemList, HttpStatus.OK);
+        return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
     }
 
     @PostMapping("/basket/delete")

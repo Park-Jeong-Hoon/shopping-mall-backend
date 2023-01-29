@@ -8,12 +8,9 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemDto {
+public class ItemAddDto {
 
-    private Long id;
     private String name;
     private int price;
     private int stockQuantity;
-    private String imageName;
-    private String username;
 }
