@@ -61,7 +61,11 @@ public class OrderService {
             orderItem.setQuantity(quantity);
             orderItem.setOrderItemStatus(OrderItemStatus.ORDER);
             orderItemRepository.save(orderItem);
-            price += item.getPrice() * quantity;
+
+            int cost = item.getPrice() * quantity;
+            Member itemSeller = item.getMember();
+            itemSeller.setRevenue(itemSeller.getRevenue() + cost);
+            price += cost;
         }
 
         order.setPrice(price);
@@ -107,6 +111,9 @@ public class OrderService {
             orderItem.setOrderItemStatus(OrderItemStatus.CANCEL);
             Item item = orderItem.getItem();
             item.setStockQuantity(item.getStockQuantity() + orderItem.getQuantity());
+
+            Member itemSeller = item.getMember();
+            itemSeller.setRevenue(itemSeller.getRevenue() - item.getPrice() * orderItem.getQuantity());
         }
     }
 }
