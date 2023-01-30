@@ -18,4 +18,5 @@ public class MemberDto {
     private String phone;
     private String email;
     private Address address;
+    private int revenue;
 }
