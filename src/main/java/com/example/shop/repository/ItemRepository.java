@@ -20,4 +20,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query(value = "SELECT new com.example.shop.dto.ItemDto(i.id, i.name, i.price, i.stockQuantity, i.imageName, i.member.username) FROM Item i " +
             "WHERE i.name LIKE %:name%")
     List<ItemDto> getItemDtoListByNameContains(@Param(value = "name") String name);
+
+    @Query(value = "SELECT new com.example.shop.dto.ItemDto(i.id, i.name, i.price, i.stockQuantity, i.imageName, i.member.username) FROM Item i WHERE i.member.id = :memberId")
+    List<ItemDto> getOwnAllDtoList(@Param(value = "memberId") Long memberId);
 }

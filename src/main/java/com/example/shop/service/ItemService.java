@@ -109,4 +109,11 @@ public class ItemService {
 
         itemBasketRepository.deleteByMember_IdAndItem_Id(memberId, itemId);
     }
+
+    public List<ItemDto> getOwnItemDtoList(Long memberId) {
+
+        List<ItemDto> itemDtoList = itemRepository.getOwnAllDtoList(memberId);
+
+        return itemDtoList;
+    }
 }

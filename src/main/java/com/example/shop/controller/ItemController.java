@@ -103,4 +103,12 @@ public class ItemController {
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @GetMapping("/owns")
+    public ResponseEntity<List<ItemDto>> getOwnItemDtoList(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+        List<ItemDto> itemDtoList = itemService.getOwnItemDtoList(principalDetails.getMember().getId());
+
+        return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
+    }
 }
