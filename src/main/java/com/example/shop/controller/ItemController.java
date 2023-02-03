@@ -3,7 +3,6 @@ package com.example.shop.controller;
 import com.example.shop.auth.PrincipalDetails;
 import com.example.shop.dto.ItemAddDto;
 import com.example.shop.dto.ItemDto;
-import com.example.shop.model.Item;
 import com.example.shop.service.ItemService;
 import com.example.shop.service.S3Service;
 import org.springframework.http.HttpStatus;

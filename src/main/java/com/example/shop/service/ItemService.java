@@ -28,7 +28,7 @@ public class ItemService {
         this.itemBasketRepository = itemBasketRepository;
     }
 
-    public void add(ItemAddDto itemAddDto, String imgUrl, Long memberId) throws Exception {
+    public Long add(ItemAddDto itemAddDto, String imgUrl, Long memberId) throws Exception {
 
         Optional<Member> memberOptional = memberRepository.findById(memberId);
 
@@ -44,6 +44,8 @@ public class ItemService {
         item.setImageName(imgUrl);
         item.setMember(member);
         itemRepository.save(item);
+
+        return item.getId();
     }
 
     @Transactional
