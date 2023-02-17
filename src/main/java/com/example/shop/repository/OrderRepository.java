@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query(value = "SELECT new com.example.shop.dto.OrderDto(o.id, o.orderStatus, o.price, o.orderDate, o.delivery.deliveryStatus) FROM Order o WHERE o.member.id = :memberId")
+    @Query(value = "SELECT new com.example.shop.dto.OrderDto(o.id, o.orderStatus, o.price, o.name, o.orderDate, o.delivery.deliveryStatus) FROM Order o WHERE o.member.id = :memberId")
     List<OrderDto> getOrderDtoListByMemberId(@Param(value = "memberId") Long memberId);
 }

@@ -14,14 +14,14 @@ import javax.persistence.*;
 public class Delivery {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
     private Order order;
 
     @Embedded
-    Address address;
+    private Address address;
 
     @Enumerated(EnumType.STRING)
-    DeliveryStatus deliveryStatus;
+    private DeliveryStatus deliveryStatus;
 }

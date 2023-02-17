@@ -48,6 +48,8 @@ public class OrderService {
         delivery.setDeliveryStatus(DeliveryStatus.READY);
 
         int price = 0;
+        String orderName = "";
+        int count = 0;
         Order order = new Order();
         order.setMember(member);
 
@@ -66,9 +68,18 @@ public class OrderService {
             Member itemSeller = item.getMember();
             itemSeller.setRevenue(itemSeller.getRevenue() + cost);
             price += cost;
+            if (count == 0) {
+                if (orderItemDtoList.size() == 1) {
+                    orderName += item.getName() + " " + quantity + "개";
+                } else {
+                    orderName += item.getName() + " " + quantity + "개 외 " + (orderItemDtoList.size() - 1) + "종류";
+                }
+            }
+            count++;
         }
 
         order.setPrice(price);
+        order.setName(orderName);
         order.setOrderStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());
         order.setDelivery(delivery);

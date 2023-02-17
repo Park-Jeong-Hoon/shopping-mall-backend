@@ -16,6 +16,7 @@ public class OrderDto {
     private Long id;
     private OrderStatus orderStatus;
     private int price;
+    private String name;
     private LocalDateTime orderDate;
     private DeliveryStatus deliveryStatus;
 }

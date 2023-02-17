@@ -28,6 +28,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    int price;
+    private int price;
+    private String name;
     private LocalDateTime orderDate;
 }
